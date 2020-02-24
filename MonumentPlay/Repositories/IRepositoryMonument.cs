@@ -12,7 +12,7 @@ namespace MonumentPlay.Repositories
         Usuario GetUsuario(String nickName, String pass);
         Monumento GetMonumento(int idMon);
         List<UserMonument> GetMonumentUser(String nickname, String password);
-        void InsertarUsuario(int idUser, String nombre, String email, String nickname, String password);
+        void InsertarUsuario(String nombre, String email, String nickname, String password);
         void ActualizarUsuario(String nombre, String email, String nickname, String password);
     }
 }

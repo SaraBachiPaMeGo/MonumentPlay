@@ -1,0 +1,13 @@
+﻿
+@if (Context.User.Identity.IsAuthenticated == false)
+{
+    @Html.ActionLink("Log in", "MiPerfil", "Manage",null, new { @class = "btn-success btn" })
+    @Html.ActionLink("Registrarse", "NewUser", "Manage", null,new { @class = "btn-success btn" })
+
+}
+else
+{
+    <h2>@Context.User.Identity.Name</h2>
+    @Html.ActionLink("Cerrar Sesión", "CerrarSesion", "Manage",null, new { @class = "btn-danger btn" })
+}
+

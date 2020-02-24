@@ -4,9 +4,11 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using MonumentPlay.Models;
+using MySql.Data.Entity;
 
 namespace MonumentPlay.Data
 {
+    [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class ContextoMonumentMYSQL : DbContext, IContextoMonument
     {
         public ContextoMonumentMYSQL() : base("name=conexionmonumentMYSQL")
@@ -19,5 +21,6 @@ namespace MonumentPlay.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Provincia> Provincias { get; set; }
         public DbSet<PuebloCiudad> PueblosCiudades { get; set; }
+        public DbSet<UserMonument> UsuariosMonumentos { get; set; }
     }
 }

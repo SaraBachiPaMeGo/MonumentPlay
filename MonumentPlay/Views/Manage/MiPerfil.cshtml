@@ -1,0 +1,53 @@
+﻿@using MonumentPlay.Models
+@model UsuarioPrincipal
+
+@{
+    ViewBag.Title = "MiPerfil";
+}
+
+<h2>Mi Perfil</h2>
+
+@{
+    UsuarioPrincipal user = (UsuarioPrincipal)HttpContext.Current.User;
+}
+
+<h2>Perfil</h2>
+
+@if (user != null)
+{
+    <h1>Bienvenido a tu perfil @user.NombreUs</h1>
+    <div>
+        <h4>Usuario</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Nombre:
+            </dt>
+
+            <dd>
+                @user.NombreUs
+            </dd>
+
+            <dt>
+                Nickname:
+            </dt>
+
+            <dd>
+                @user.NickName
+            </dd>
+            <dt>
+                Email:
+            </dt>
+
+            <dd>
+                @user.Email
+            </dd>
+
+        </dl>
+    </div>
+    @*<p>
+            @Html.ActionLink("Editar", "Actualizar", new { id = Model.IdUser })
+    </p>*@
+
+}
+

@@ -8,12 +8,12 @@ using System.Web;
 namespace MonumentPlay.Models
 {
     [Table("user_has_monumento")]
-    public class UserMonument : Usuario, Monumento
+    public class UserMonument 
     {
         [Key]
         [Column("User_idUser")]
-        public int IdUser { get; set; }
+        public int IdUsuarioMonu { get; set; }
         [Column("Monumento_idMonumento")]
-        public int IdMonumento { get; set; }
+        public int IdMonumentoUser { get; set; }
     }
 }

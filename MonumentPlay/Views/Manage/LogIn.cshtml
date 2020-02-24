@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "LogIn";
+}
+
+<h2>Log In</h2>
+
+<form method="post">
+    <fieldset>
+        <label>Nickname:</label>
+        <input name="nickname" class="form-control" />
+        <label>Password:</label>
+        <input name="pass" class="form-control" />
+    </fieldset>
+    <button type="submit" class="btn-success">Entrar</button>
+</form>
+
+<h1>@ViewBag.MensajeError</h1>

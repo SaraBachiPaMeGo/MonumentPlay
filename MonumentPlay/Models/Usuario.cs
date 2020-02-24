@@ -20,7 +20,10 @@ namespace MonumentPlay.Models
         [Column("NickName")]
         public String NickName { get; set; }
         [Column("Password")]
-        public String Password { get; set; }
+        public byte[] Password { get; set; }
+
+        [Column("Salt")]
+        public String Salt { get; set; }
 
     }
 }

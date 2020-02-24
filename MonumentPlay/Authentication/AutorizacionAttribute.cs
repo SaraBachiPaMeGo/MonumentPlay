@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MonumentPlay.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,7 +13,9 @@ namespace MonumentPlay.Authentication
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             base.OnAuthorization(filterContext);
-            if (filterContext == null)
+            UsuarioPrincipal user = HttpContext.Current.User as UsuarioPrincipal;
+
+            if (user != null)
             {
                 //Capturamos el action y el controller que se haya activado
                 String action = filterContext.RouteData.Values["action"].ToString();
@@ -21,17 +24,19 @@ namespace MonumentPlay.Authentication
                 //Se lo pasamos al controller con TempData
                 filterContext.Controller.TempData["action"] = action;
                 filterContext.Controller.TempData["controller"] = controller;
-
-                filterContext.Result =GetRoute("Login", "Manage");
+            }
+            else
+            {
+                filterContext.Result = GetRoute("Login", "Manage");
             }
         }
 
-        public RedirectToRouteResult GetRoute(String action, String controller) 
+        public RedirectToRouteResult GetRoute(String accion, String controler) 
         {
             RouteValueDictionary ruta = new RouteValueDictionary(new
             {                
-                action = action,
-                controller = controller
+                action = accion,
+                controller = controler
             });
             return new RedirectToRouteResult(ruta);
         }

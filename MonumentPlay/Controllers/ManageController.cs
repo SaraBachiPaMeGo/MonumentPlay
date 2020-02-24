@@ -65,26 +65,21 @@ namespace MonumentPlay.Controllers
         }
 
         [HttpPost]
-        public ActionResult NewUser(Usuario user)
+        public ActionResult NewUser(String nombreUs, String email, String nickName, String password)
         {
-            repo.InsertarUsuario(user.IdUser, user.NombreUs, user.NickName, user.Email, user.Password);
+            repo.InsertarUsuario(nombreUs, nickName, email, password);
             //SweetAlert de Bienvenida, redirigir a la página de inicio
             return RedirectToAction("Index");
         }
 
         [Autorizacion]
-
-        public ActionResult MiPerfil(String nickname, string password)
+        public ActionResult MiPerfil()
         {
-            return View(repo.GetUsuario(nickname, password));
-        }
+            //Recuperar el último click
+            String controller = TempData["controller"].ToString();
+            String action = TempData["action"].ToString();
 
-        [HttpPost]
-        public ActionResult MiPerfil(Usuario user)
-        {
-            repo.ActualizarUsuario(user.NombreUs, user.NickName, user.Email, user.Password);
-            //Meter los sitios que has visitado?
-            return View(repo.GetUsuario(user.NickName, user.Password));
+            return RedirectToAction(action,controller);
         }
 
         public ActionResult CerrarSesion()
@@ -104,5 +99,7 @@ namespace MonumentPlay.Controllers
 
             return RedirectToAction("Index");
         }
+
+
     }
 }
