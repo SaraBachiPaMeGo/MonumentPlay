@@ -1,6 +1,7 @@
 ﻿using MonumentPlay.Authentication;
 using MonumentPlay.Models;
 using MonumentPlay.Repositories;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,18 @@ namespace MonumentPlay.Controllers
             this.repo = repo;
         }
         // GET: Manage
+        
         public ActionResult Index()
         {
             return View();
+        }
+        [HttpPost]
+        public ActionResult Index(String ciudad)
+        {
+            PuebloCiudad pue = repo.EncontrarPueblo(ciudad);
+            //Guardar el id de la ciudad en session 
+            Session["Pueblo"] = pue;
+            return RedirectToAction("VerMapa");
         }
 
         public ActionResult LogIn()
@@ -100,6 +110,46 @@ namespace MonumentPlay.Controllers
             return RedirectToAction("Index");
         }
 
+       
+        public ActionResult VerMapa() 
+        {
+            if (Session["Pueblo"] !=null) {
+                PuebloCiudad pue = (PuebloCiudad)Session["Pueblo"];
+                List<Monumento> listaMonu = repo.
+                    GetMonumentosPueblo(pue.IdPuebloCiudad);
+                ViewBag.ListaMonu = JsonConvert.SerializeObject(listaMonu);
+                return View();
+            }
+            else {
+                return RedirectToAction("Index");
+            }
+            
+        }
 
+        //[HttpPost]
+        //public ActionResult VerMapa()
+        //{
+        //    PuebloCiudad pue = (PuebloCiudad)Session["Pueblo"];
+        //    List<Monumento> listaMonu = repo.
+        //        GetMonumentosPueblo(pue.IdPuebloCiudad);
+
+        //    return View(listaMonu);
+        //}
+
+        [System.Web.Services.WebMethod]
+        public string GetMonumentosPueblo(List<Monumento>listaMonu) 
+        {
+            if (listaMonu != null)
+            {
+                foreach (Monumento monu in listaMonu)
+                {
+                    return monu.NombreMon;
+                }
+            }
+            else {
+                return null;
+            }
+            return "dentro" ;
+        }
     }
 }

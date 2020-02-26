@@ -1,0 +1,111 @@
+﻿@using MonumentPlay.Models;
+@model List<Monumento>
+
+@{
+    ViewBag.Title = "VerMapa";
+}
+
+<h2>VerMapa</h2>
+
+<div id="mapid" style="width: 800px; height: 600px; background-color:pink">
+
+</div>
+
+@section scripts {
+    <script src="~/Scripts/leaflet.js">
+    </script>
+    <script>
+
+        //La ciudad la debería recuperar de la BBDD junto con sus monumentos
+        //Hacer que se generen más points y meter en su bindPopup el nombre del
+        //monumento e información de interés
+
+        //En el index no va a ir el mapa, en el Index irá el buscador
+
+        //En mi perfil añadir las búsquedas/Monumentos
+
+        $(document).ready(function () {
+            //$(selector).load(URL,data,callback);
+            
+            $("#mapid").load("/VerMapa/Manage", function () {
+                var latitud = [];
+                var longitud = [];
+                var lista = @Html.Raw(ViewBag.ListaMonu);
+              
+                for (var i = 0; i < lista.length; i++){
+                    var obj = lista[i];
+                    for (var prop in obj) {
+                        if (prop == "Latitud") {
+                            latitud.push(parseFloat(obj[prop]));
+                        }
+                         if (prop == "Longitud") {
+                             longitud.push(parseFloat(obj[prop]));
+                        }
+                    }                    
+                 }
+
+                var maxLat = Math.max.apply(Math,latitud);
+                var minLat = Math.min.apply(Math, latitud);
+                var maxLong = Math.max.apply(Math, longitud);
+                var minLong = Math.min.apply(Math, longitud);
+                
+                var mymap = L.map('mapid').setView([maxLat, minLong], 13);
+                for (var i = 0; i < lista.length; i++){
+                    var obj = lista[i];
+                    var lat = 0;
+                    var long = 0;
+                    for (var prop in obj) {
+                        if (prop == "Latitud") {
+                            latitud.push(parseFloat(obj[prop]));
+                            lat = parseFloat(obj[prop]);
+                        }
+                         if (prop == "Longitud") {
+                             longitud.push(parseFloat(obj[prop]));
+                            long = parseFloat(obj[prop]);
+
+                        }
+                    }
+                    var marker = L.marker([lat, long].).addTo(mymap);            
+
+                        var circle = L.circle([lat, long], {
+                            color: 'red',
+                            fillColor: '#f03',
+                            fillOpacity: 0.5,
+                            radius: 500
+                        }).addTo(mymap);
+
+                        marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+                        circle.bindPopup("I am a circle.");
+                        //polygon.bindPopup("I am a polygon.");
+
+                        //var popup = L.popup()
+                        //    .setLatLng([lat, long])
+                        //    .setContent("I am a standalone popup.")
+                        //.openOn(mymap);
+                    
+                 }
+
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                subdomains: ['a', 'b', 'c']
+            }).addTo(mymap);
+
+
+            // function onMapClick(e) {
+            //     popup
+            //        .setLatLng([lat, long])
+            //        .setContent("You clicked the map at " + e.latlng.toString())
+            //        .openOn(mymap);
+            //}
+
+            //mymap.on('click', onMapClick);
+                
+            });
+            //var polygon = L.polygon([
+            //    [51.509, -0.08],
+            //    [51.503, -0.06],
+            //    [51.51, -0.047]
+            //]).addTo(mymap);
+        })
+    </script>
+    }

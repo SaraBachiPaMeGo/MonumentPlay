@@ -20,18 +20,13 @@ namespace MonumentPlay.Repositories
         }
 
         public Usuario GetUsuario(String nickName, String pass)
-        {
-            byte[] passByte = Encoding.ASCII.GetBytes(pass);
+        {  
+            var consulta = from datos in context.Usuarios
+                           where datos.NickName == nickName
+                           select datos;
 
-            //Primero cojo el salt y después calculo el hash con el pass y el salt
-            //var consulta = from datos in context.Usuarios
-            //               where datos.NickName == nickName
-            //               && datos.Password == passByte
-            //               select datos;
+            Usuario user = consulta.FirstOrDefault();
 
-            //Usuario user = consulta.FirstOrDefault();
-
-            byte[] pass = HelperCifrado.CifrarPassword(passByte, User.salt);
             if (user!= null)
             {
                 String salt = user.Salt;
@@ -45,11 +40,7 @@ namespace MonumentPlay.Repositories
                 else
                 {
                     return null;
-                }
-                //https://security.stackexchange.com/questions/120507/should-the-salt-of-a-bcrypt-hashed-password-be-stored-separately
-                //string passwordHash = BCrypt.Net.BCrypt.HashPassword(pass);
-                //InsertarSalt(pass);
-                //bool correctPassword = BCrypt.Net.BCrypt.Verify(storedPassword, passwordHash);
+                }               
             }
             else
             {
@@ -124,11 +115,17 @@ namespace MonumentPlay.Repositories
             this.context.SaveChanges();
         }
 
-        //public String InsertarSalt(String pass)
-        //{
-        //    string passwordHash = BCrypt.Net.BCrypt.HashPassword(pass);
-        //    return passwordHash;
-        //}
+        public PuebloCiudad EncontrarPueblo(String nombre) 
+        {
+            var consulta = from datos in context.PueblosCiudades
+                           where datos.NombrePu == nombre
+                           select datos;
+            return consulta.FirstOrDefault();
+        }
 
+        public List<Monumento> GetMonumentosPueblo(int idPueblo) 
+        {
+            return this.context.Monumentos.Where(z => z.IdPuebloCiudad == idPueblo).ToList();
+        }
     }
 }

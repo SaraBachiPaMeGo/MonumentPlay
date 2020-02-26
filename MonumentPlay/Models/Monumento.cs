@@ -13,15 +13,17 @@ namespace MonumentPlay.Models
         [Key]
         [Column("idMonumento")]
         public int IdMonumento { get; set; }
+        [Column("idPuebloCiudad")]
+        public int IdPuebloCiudad { get; set; }
 
         [Column("NombreMon")]
         public String NombreMon { get; set; }
         [Column("Descripcion")]
         public String Descripcion { get; set; }
         [Column("Latitud")]
-        public String Latitud { get; set; }
-        [Column("Longitug")]
-        public String Longitud { get; set; }
+        public Double Latitud { get; set; }
+        [Column("Longitud")]
+        public Double Longitud { get; set; }
 
     }
 }
